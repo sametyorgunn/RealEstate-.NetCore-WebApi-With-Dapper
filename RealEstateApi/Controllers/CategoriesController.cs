@@ -17,8 +17,8 @@ namespace RealEstateApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCategoryList()
         {
-            var category = await _categoryRepository.GetAllCategoriesAsync();
-            return Ok(category);
+            var categories = await _categoryRepository.GetAllCategoriesAsync();
+            return Ok(categories);
         }
     }
 }
