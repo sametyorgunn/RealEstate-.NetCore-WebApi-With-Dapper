@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RealEstateApi.Dtos.CategoryDtos;
 using RealEstateApi.Repositories.CategoryRepository;
 
 namespace RealEstateApi.Controllers
@@ -19,6 +20,12 @@ namespace RealEstateApi.Controllers
         {
             var categories = await _categoryRepository.GetAllCategoriesAsync();
             return Ok(categories);
+        }
+        [HttpPost]
+        public async Task<IActionResult>CreateCategory(CreateCategoryDto createCategoryDto)
+        {
+            _categoryRepository.CreateCategory(createCategoryDto);
+            return Ok();
         }
     }
 }
