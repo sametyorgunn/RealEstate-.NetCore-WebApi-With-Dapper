@@ -14,13 +14,24 @@ namespace RealEstateApi.Repositories.CategoryRepository
 
         public async void CreateCategory(CreateCategoryDto categoryDto)
         {
-            string query = "insert into Category (categoryTitle,categoryStatus) values(@categoryName,@categoryStatus)";
+            string query = "insert into Category (categoryName,categoryStatus) values(@categoryName,@categoryStatus)";
             var parameters = new DynamicParameters();
-            parameters.Add("@categoryName", categoryDto.CategoryTitle);
+            parameters.Add("@categoryName", categoryDto.categoryName);
             parameters.Add("@categoryStatus", true);
             using(var connection = _context.CreateConnection())
             {
                 await connection.ExecuteAsync(query, parameters);
+            }
+        }
+
+        public async void DeleteCategory(int id)
+        {
+            string query = "delete from Category where categoryId=@categoryId";
+            var parameters = new DynamicParameters();
+            parameters.Add("@categoryId", id);
+            using(var connection = _context.CreateConnection())
+            {
+               await connection.ExecuteAsync(query,parameters);
             }
         }
 
@@ -33,6 +44,32 @@ namespace RealEstateApi.Repositories.CategoryRepository
                 return values.ToList();
             }
 
+        }
+
+        public async Task<GetCategoryById> GetCategoryById(int id)
+        {
+            string query = "select * from Category where categoryId=@categoryId";
+            var parameters = new DynamicParameters();
+            parameters.Add("@categoryId", id);
+            using(var connection = _context.CreateConnection())
+            {
+                var data =  connection.QueryFirstOrDefault<GetCategoryById>(query, parameters);
+               return data;
+            }
+        }
+
+        public async void UpdateCategory(UpdateCategoryDto categoryDto)
+        {
+            string query = "update Category set categoryName=@categoryName,categoryStatus=@categoryStatus where categoryId=@categoryId";
+            var parameters = new DynamicParameters();
+            parameters.Add("@categoryId", categoryDto.categoryId);
+            parameters.Add("@categoryName", categoryDto.categoryName);
+            parameters.Add("@categoryStatus", categoryDto.categoryStatus);
+
+            using (var connection = _context.CreateConnection())
+            {
+                await connection.ExecuteAsync(query, parameters);
+            }
         }
     }
 }

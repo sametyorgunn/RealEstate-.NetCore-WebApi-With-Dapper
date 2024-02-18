@@ -2,8 +2,8 @@
 {
     public class CreateCategoryDto
     {
-        public int CategoryId { get; set; }
-        public string CategoryTitle { get; set; }
-        public bool Status { get; set; }
+        public int categoryId { get; set; }
+        public string categoryName { get; set; }
+        public bool categoryStatus { get; set; }
     }
 }

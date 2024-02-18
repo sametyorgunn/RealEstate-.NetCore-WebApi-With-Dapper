@@ -27,5 +27,23 @@ namespace RealEstateApi.Controllers
             _categoryRepository.CreateCategory(createCategoryDto);
             return Ok();
         }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCategory(int id)
+        {
+            _categoryRepository.DeleteCategory(id);
+            return Ok();
+        }
+        [HttpPut]
+        public async Task <IActionResult> UpdateCategory(UpdateCategoryDto updateCategoryDto)
+        {
+            _categoryRepository.UpdateCategory(updateCategoryDto);
+            return Ok();
+        }
+        [HttpGet("getById")]
+        public async Task<IActionResult> GetCategoryById(int id)
+        {
+            var category = _categoryRepository.GetCategoryById(id);
+            return Ok(category.Result);
+        }
     }
 }
