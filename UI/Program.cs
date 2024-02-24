@@ -1,8 +1,20 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddCookie(JwtBearerDefaults.AuthenticationScheme, opt =>
+{
+    opt.LoginPath = "/Login/Index/";
+    opt.LogoutPath = "/Login/LogOut/";
+    opt.AccessDeniedPath = "/Pages/AccessDenied/";
+    opt.Cookie.HttpOnly = true;
+    opt.Cookie.SameSite = SameSiteMode.Strict;
+    opt.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+    opt.Cookie.Name = "RealEstateJwt";
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -17,11 +29,14 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
 	name: "default",
-	pattern: "{controller=Category}/{action=Index}/{id?}");
-
+	pattern: "{controller=Login}/{action=SignIn}/{id?}");
+app.MapControllerRoute(
+			name: "Login",
+			pattern: "Login", // Route pattern for the login URL
+			defaults: new { controller = "Login", action = "SignIn" });
 app.Run();
